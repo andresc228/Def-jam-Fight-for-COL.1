@@ -86,6 +86,7 @@ for idx, en in enumerate(enemigos_disponibles):
 indice_enemigo = int(input("Número: ")) - 1
 enemigo = enemigos_disponibles[indice_enemigo]
 
+
 # Movimiento y habilidades
 vel = 5
 curacion = 15
@@ -130,4 +131,3 @@ while jugando:
     pygame.display.update()
 
 pygame.quit()
-
