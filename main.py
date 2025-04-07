@@ -85,3 +85,49 @@ for idx, en in enumerate(enemigos_disponibles):
         print(f"{idx + 1}. {en.nombre}")
 indice_enemigo = int(input("Número: ")) - 1
 enemigo = enemigos_disponibles[indice_enemigo]
+
+# Movimiento y habilidades
+vel = 5
+curacion = 15
+
+# Bucle principal
+jugando = True
+while jugando:
+    clock.tick(60)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            jugando = False
+
+    teclas = pygame.key.get_pressed()
+    if teclas[pygame.K_LEFT]: jugador.x -= vel
+    if teclas[pygame.K_RIGHT]: jugador.x += vel
+    if teclas[pygame.K_UP]: jugador.y -= vel
+    if teclas[pygame.K_DOWN]: jugador.y += vel
+
+    if teclas[pygame.K_a]: jugador.ataque_cercano(enemigo)
+    if teclas[pygame.K_z]: jugador.ataque_lejano(enemigo)
+    if teclas[pygame.K_s]: jugador.curar(curacion)
+
+    if enemigo.esta_vivo():
+        enemigo.mover_aleatoriamente()
+        if random.random() < 0.02:
+            if abs(jugador.x - enemigo.x) < 200:
+                enemigo.ataque_lejano(jugador)
+        if random.random() < 0.01:
+            enemigo.ataque_cercano(jugador)
+
+    if not enemigo.esta_vivo():
+        jugando = False
+        print("¡Ganaste!")
+    if not jugador.esta_vivo():
+        jugando = False
+        print("¡Has sido derrotado!")
+
+    win.fill(WHITE)
+    jugador.dibujar(win)
+    if enemigo.esta_vivo():
+        enemigo.dibujar(win)
+    pygame.display.update()
+
+pygame.quit()
+
